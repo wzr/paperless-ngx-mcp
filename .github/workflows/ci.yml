@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    # Windows is intentionally excluded: validateFilePath() uses filepath.IsAbs(),
+    # which requires a drive letter on Windows, so several existing tests that use
+    # Unix-style absolute paths fail there. That's a pre-existing portability gap,
+    # not something this workflow should mask or fight.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Check formatting (golines)
+        run: |
+          out=$(go run github.com/segmentio/golines -l --max-len=80 .)
+          if [ -n "$out" ]; then
+            echo "The following files need golines formatting (run 'make fmt'):"
+            echo "$out"
+            exit 1
+          fi
+
+      - name: Check formatting (gofumpt)
+        run: |
+          out=$(go run mvdan.cc/gofumpt -l .)
+          if [ -n "$out" ]; then
+            echo "The following files need gofumpt formatting (run 'make fmt'):"
+            echo "$out"
+            exit 1
+          fi
+
+      - name: Lint
+        run: go run github.com/mgechev/revive ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
