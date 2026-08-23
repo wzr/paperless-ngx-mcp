@@ -19,7 +19,17 @@ jobs:
           cache: true
 
       - name: Build release binaries
-        run: make build-release
+        # Only the targets we actually use, not the Makefile's full
+        # darwin/linux/netbsd/openbsd/solaris/windows matrix. Calling the
+        # per-binary make targets directly (rather than build-release)
+        # avoids touching the Makefile itself, which the rest of the
+        # matrix and `make build`/`make install` still rely on.
+        run: |
+          mkdir -p dist
+          make \
+            dist/paperless-ngx-mcp-darwin-arm64 \
+            dist/paperless-ngx-mcp-linux-amd64 \
+            dist/paperless-ngx-mcp-windows-amd64.exe
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
