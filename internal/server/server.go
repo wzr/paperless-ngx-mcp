@@ -18,7 +18,7 @@ import (
 const (
 	MCPProtocolVersion   = "2024-11-05"
 	ServerName           = "paperless-ngx-mcp"
-	ServerVersion        = "0.1.1"
+	ServerVersion        = "0.2.0"
 	ToolExecutionTimeout = 30 * time.Second
 )
 
@@ -116,6 +116,9 @@ func (s *Server) registerTools() {
 		s.client,
 	)
 	s.tools["download_document"] = tools.NewDownloadDocument(
+		s.client,
+	)
+	s.tools["bulk_edit_tags"] = tools.NewBulkEditTags(
 		s.client,
 	)
 	s.tools["list_tags"] = tools.NewListTags(

@@ -70,6 +70,8 @@ paperless-ngx-mcp/
 │       ├── upload_document_test.go      # Upload document tests
 │       ├── download_document.go         # Download document tool
 │       ├── download_document_test.go    # Download document tests
+│       ├── bulk_edit_tags.go            # Bulk edit document tags tool
+│       ├── bulk_edit_tags_test.go       # Bulk edit document tags tests
 │       ├── tool_common_test.go          # Cross-cutting tests (description, schema)
 │       ├── create_custom_field_test.go  # Create custom field tests
 │       ├── create_storage_path_test.go  # Create storage path tests
@@ -611,6 +613,13 @@ noted below.
 - **Output**: Confirmation with save path, size, and content type
 - **Note**: Dedicated file because it streams response body to file; validates `save_path` with `validateFilePath`
 
+### `bulk_edit_tags` (`bulk_edit_tags.go` — dedicated file)
+
+- **Endpoint**: `POST /api/documents/bulk_edit/`
+- **Input**: `document_ids` (required, array); `add_tags`, `remove_tags` (both optional arrays, at least one required)
+- **Output**: Confirmation summarizing document count and tags added/removed
+- **Note**: Dedicated file because bulk-edit is a single fixed endpoint operating on an array of document IDs, not a per-resource CRUD path; uses Paperless-NGX's `modify_tags` bulk-edit method. Expects HTTP 200 with `{"result": "OK"}`, not 201.
+
 ### `list_tags` (`tool_constructors_list.go` — `NewListTags`)
 
 - **Endpoint**: `GET /api/tags/`
@@ -796,7 +805,7 @@ Zero external dependencies for production code - uses only Go standard library.
 ## Version Information
 
 - MCP Protocol Version: `2024-11-05`
-- Server Version: `0.1.1`
+- Server Version: `0.2.0`
 - Go Version: 1.21+ required
 
 ## Resources

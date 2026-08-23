@@ -504,6 +504,21 @@ var allToolTests = []toolTestEntry{
 		},
 		required: []string{"id", "save_path"},
 	},
+
+	// BulkEditTags takes an array of document IDs rather than a single
+	// "id", so idArgsFmt/missingIDArgs (which assume a single-ID shape)
+	// don't apply; its own validation is covered in
+	// bulk_edit_tags_test.go instead.
+	{
+		name: "BulkEditTags",
+		newTool: func(c *client.Client) Tool {
+			return NewBulkEditTags(c)
+		},
+		serverArgs: `{"document_ids": [1, 2], ` +
+			`"add_tags": [3]}`,
+		required:       []string{"document_ids"},
+		expectedStatus: http.StatusOK,
+	},
 }
 
 func TestAllTools_Description(t *testing.T) {

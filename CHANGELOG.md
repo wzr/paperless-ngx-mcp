@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.0
+
+### Added
+- **`bulk_edit_tags` tool**: add and/or remove tags across multiple documents in a single request, using Paperless-NGX's `modify_tags` bulk-edit endpoint.
+
 ## v0.1.1
 
 ### Fixed

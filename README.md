@@ -81,11 +81,11 @@ set in the environment.
 
 ## Capabilities
 
-The server provides 49 tools across the following areas:
+The server provides 50 tools across the following areas:
 
 | Area | Operations |
 |------|------------|
-| **Documents** | Search, view, update, delete, upload, download, metadata, AI suggestions, next ASN |
+| **Documents** | Search, view, update, delete, upload, download, metadata, AI suggestions, next ASN, bulk tag edit |
 | **Correspondents** | List, view, create, update, delete |
 | **Document Types** | List, view, create, update, delete |
 | **Tags** | List, view, create, update, delete |
